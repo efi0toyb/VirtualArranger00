@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yamaha Virtual Arranger Workstation</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="workstation-container">
+
+    <!-- TOP HEADER BAR -->
+    <header class="top-bar">
+      <div class="logo-area">
+        <span class="brand-badge">YAMAHA</span>
+        <h1 class="product-title">VIRTUAL ARRANGER <span>PRO WORKSTATION</span></h1>
+      </div>
+
+      <div class="header-status">
+        <div class="status-pill style-pill" id="currentStyleBadge">
+          <span class="pill-label">STYLE:</span>
+          <span class="pill-value" id="headerStyleName">No Style Loaded</span>
+        </div>
+        <div class="status-pill soundfont-pill" id="currentSoundFontBadge">
+          <span class="pill-label">SOUNDFONT:</span>
+          <span class="pill-value" id="headerSoundFontName">None</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="header-btn" id="btnBrowseStyles" title="Browse Styles Folder">📂 STYLES</button>
+        <button class="header-btn" id="btnLoadSoundFont" title="Load SoundFont SF2">🎵 SOUNDFONT</button>
+        <button class="header-btn settings-btn" id="btnOpenSettings" title="Audio Driver & Device Settings">⚙️ SETTINGS</button>
+      </div>
+    </header>
+
+    <!-- MAIN CONSOLE SECTION -->
+    <div class="console-body">
+
+      <!-- LEFT HARDWARE FLANK (Volume Sliders & Controllers) -->
+      <aside class="hardware-flank left-flank">
+        <div class="flank-group">
+          <div class="rotary-control">
+            <label>MASTER VOL</label>
+            <input type="range" id="masterVolSlider" min="0" max="1.5" step="0.01" value="1.0" class="vertical-slider">
+            <span class="rotary-val" id="masterVolVal">100%</span>
+          </div>
+
+          <div class="rotary-control">
+            <label>STYLE VOL</label>
+            <input type="range" id="styleVolSlider" min="0" max="1.5" step="0.01" value="0.85" class="vertical-slider">
+            <span class="rotary-val" id="styleVolVal">85%</span>
+          </div>
+
+          <div class="rotary-control">
+            <label>LEAD VOL</label>
+            <input type="range" id="leadVolSlider" min="0" max="1.5" step="0.01" value="1.0" class="vertical-slider">
+            <span class="rotary-val" id="leadVolVal">100%</span>
+          </div>
+        </div>
+
+        <div class="hardware-switches">
+          <button class="toggle-btn" id="btnSyncStart">
+            <span class="led-dot"></span>
+            <span>SYNC START</span>
+          </button>
+          <button class="toggle-btn" id="btnSyncStop">
+            <span class="led-dot"></span>
+            <span>SYNC STOP</span>
+          </button>
+          <button class="toggle-btn active" id="btnAutoFill">
+            <span class="led-dot"></span>
+            <span>AUTO FILL</span>
+          </button>
+          <button class="toggle-btn active" id="btnOtsLink">
+            <span class="led-dot"></span>
+            <span>OTS LINK</span>
+          </button>
+          <button class="toggle-btn" id="btnSingleFinger">
+            <span class="led-dot"></span>
+            <span>SINGLE FINGER</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- CENTRAL TOUCHSCREEN DISPLAY AREA -->
+      <main class="touchscreen-panel">
+
+        <!-- TOUCHSCREEN NAVIGATION TABS -->
+        <nav class="screen-tabs">
+          <button class="screen-tab active" data-tab="tab-home">
+            <span class="tab-icon">🏠</span> MAIN DASHBOARD
+          </button>
+          <button class="screen-tab" data-tab="tab-styles">
+            <span class="tab-icon">📁</span> STYLE SELECTOR
+          </button>
+          <button class="screen-tab" data-tab="tab-voices">
+            <span class="tab-icon">🎹</span> VOICE / OTS
+          </button>
+          <button class="screen-tab" data-tab="tab-mixer">
+            <span class="tab-icon">🎛️</span> 8-TRACK MIXER
+          </button>
+        </nav>
+
+        <!-- SCREEN CONTENT CONTAINER -->
+        <div class="screen-display-bezel">
+          <div class="screen-display-content">
+
+            <!-- TAB 1: MAIN DASHBOARD -->
+            <section class="screen-tab-pane active" id="tab-home">
+              <div class="dashboard-grid">
+
+                <!-- CHORD DISPLAY BOX -->
+                <div class="lcd-card chord-box">
+                  <div class="lcd-header">CURRENT CHORD</div>
+                  <div class="chord-display-wrapper">
+                    <span class="chord-text" id="displayChordName">--</span>
+                    <span class="chord-detail" id="displayChordDetail">Play chord in Left Hand</span>
+                  </div>
+                </div>
+
+                <!-- TEMPO & BEAT BOX -->
+                <div class="lcd-card tempo-box">
+                  <div class="lcd-header">TEMPO & BEAT</div>
+                  <div class="tempo-display-wrapper">
+                    <div class="tempo-value-row">
+                      <span class="tempo-value" id="displayBpm">120</span>
+                      <span class="tempo-unit">BPM</span>
+                    </div>
+                    <div class="tempo-beat-indicators">
+                      <div class="beat-light" id="beat1"></div>
+                      <div class="beat-light" id="beat2"></div>
+                      <div class="beat-light" id="beat3"></div>
+                      <div class="beat-light" id="beat4"></div>
+                    </div>
+                  </div>
+                  <div class="tempo-buttons">
+                    <button class="tempo-adj-btn" id="btnTempoDown">◀ -1</button>
+                    <button class="tempo-adj-btn" id="btnTempoTap">TAP</button>
+                    <button class="tempo-adj-btn" id="btnTempoUp">+1 ▶</button>
+                  </div>
+                </div>
+
+                <!-- ACTIVE STYLE & SECTION DISPLAY -->
+                <div class="lcd-card style-info-box">
+                  <div class="lcd-header">ACTIVE ACCOMPANIMENT</div>
+                  <div class="style-now-playing">
+                    <div class="style-title" id="displayStyleTitle">Standard 8Beat</div>
+                    <div class="section-tag" id="displaySectionTag">MAIN A</div>
+                  </div>
+                  <div class="style-meta-row">
+                    <span id="displayTimeSig">4 / 4</span>
+                    <span id="displayMeasure">BAR: 001</span>
+                    <span id="displayFormatTag">YAMAHA SFF2</span>
+                  </div>
+                </div>
+
+                <!-- QUICK OTS PREVIEW BAR -->
+                <div class="lcd-card ots-quick-box">
+                  <div class="lcd-header">ONE TOUCH SETTINGS (OTS)</div>
+                  <div class="ots-buttons-row">
+                    <button class="ots-btn active" data-ots="0" id="btnOts1">
+                      <span class="ots-num">OTS 1</span>
+                      <span class="ots-name" id="otsName1">Concert Piano</span>
+                    </button>
+                    <button class="ots-btn" data-ots="1" id="btnOts2">
+                      <span class="ots-num">OTS 2</span>
+                      <span class="ots-name" id="otsName2">Clean Guitar</span>
+                    </button>
+                    <button class="ots-btn" data-ots="2" id="btnOts3">
+                      <span class="ots-num">OTS 3</span>
+                      <span class="ots-name" id="otsName3">Sweet Sax</span>
+                    </button>
+                    <button class="ots-btn" data-ots="3" id="btnOts4">
+                      <span class="ots-num">OTS 4</span>
+                      <span class="ots-name" id="otsName4">Overdrive Solo</span>
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+
+            <!-- TAB 2: STYLES SELECTOR -->
+            <section class="screen-tab-pane" id="tab-styles">
+              <div class="browser-layout">
+                <div class="browser-sidebar">
+                  <div class="browser-header">CATEGORIES</div>
+                  <ul class="category-list" id="styleCategoryList">
+                    <li class="active" data-cat="all">ALL STYLES</li>
+                    <li data-cat="pop">POP & ROCK</li>
+                    <li data-cat="dance">DANCE & CLUB</li>
+                    <li data-cat="ballad">BALLAD</li>
+                    <li data-cat="latin">LATIN</li>
+                    <li data-cat="jazz">JAZZ & SWING</li>
+                    <li data-cat="ballroom">BALLROOM</li>
+                    <li data-cat="country">COUNTRY</li>
+                    <li data-cat="movie">MOVIE & SHOW</li>
+                    <li data-cat="user">USER / FOLDER</li>
+                  </ul>
+                  <button class="action-btn-sm" id="btnPickStylesFolder">📂 Choose Folder...</button>
+                </div>
+                <div class="browser-main">
+                  <div class="dir-nav-bar" id="styleDirNav">
+                    <button class="dir-up-btn" id="btnDirUp" title="Go up to parent directory">⬆ UP</button>
+                    <span class="current-dir-label" id="lblCurrentDir">Current Folder: Loading...</span>
+                    <button class="dir-action-btn" id="btnBrowseSingleStyle" title="Select single style file">📄 Single File...</button>
+                  </div>
+                  <div class="dir-path-bar" style="display:flex;gap:6px;margin-bottom:8px;">
+                    <input type="text" id="manualDirPathInput" placeholder="Direct folder path (e.g. C:/VirtualArranger/set 2019)..." style="flex:1;background:#181b22;border:1px solid #333;color:#00d2ff;padding:6px 10px;border-radius:4px;font-family:monospace;font-size:12px;">
+                    <button class="action-btn-sm" id="btnGoToPath" style="padding:4px 12px;">Go</button>
+                  </div>
+                  <div class="browser-search-bar">
+                    <input type="text" id="styleSearchInput" placeholder="🔍 Search Yamaha styles (.sty, .prs, .bcs, .sst)...">
+                  </div>
+                  <div class="subfolders-container" id="subfoldersContainer"></div>
+                  <div class="file-grid" id="styleFileList">
+                    <div class="empty-state">Loading styles...</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- TAB 3: VOICES & OTS -->
+            <section class="screen-tab-pane" id="tab-voices">
+              <div class="browser-layout">
+                <div class="browser-sidebar">
+                  <div class="browser-header">VOICE GROUPS</div>
+                  <ul class="category-list" id="voiceCategoryList">
+                    <li class="active" data-family="all">ALL SOUNDS</li>
+                    <li data-family="piano">PIANOS</li>
+                    <li data-family="organ">ORGANS</li>
+                    <li data-family="guitar">GUITARS</li>
+                    <li data-family="bass">BASS</li>
+                    <li data-family="strings">STRINGS</li>
+                    <li data-family="brass">BRASS</li>
+                    <li data-family="reed">SAX & WOODWINDS</li>
+                    <li data-family="lead">SYNTH LEADS</li>
+                    <li data-family="pad">SYNTH PADS</li>
+                    <li data-family="drums">DRUMS & PERC</li>
+                    <li data-family="other">OTHER VOICES</li>
+                  </ul>
+                </div>
+                <div class="browser-main">
+                  <div class="browser-search-bar" style="margin-bottom: 8px;">
+                    <input type="text" id="voiceSearchInput" placeholder="🔍 Search SoundFont voices by name...">
+                  </div>
+                  <div class="voice-grid" id="voiceList">
+                    <!-- Populated by JS -->
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- TAB 4: 8-TRACK ACCOMPANIMENT MIXER -->
+            <section class="screen-tab-pane" id="tab-mixer">
+              <div class="mixer-console">
+                <div class="mixer-strips-container" id="mixerStrips">
+                  <!-- Generated by JS for channels 8 through 15 -->
+                </div>
+              </div>
+            </section>
+
+          </div>
+        </div>
+
+      </main>
+
+    </div>
+
+    <!-- PHYSICAL STYLE SECTION ARRANGER STRIP -->
+    <section class="arranger-button-strip">
+      <div class="strip-section-group intro-group">
+        <button class="arranger-btn intro-btn" data-type="intro" data-index="1" id="btnIntro1">
+          <span class="btn-led"></span>
+          <span>INTRO 1</span>
+        </button>
+        <button class="arranger-btn intro-btn" data-type="intro" data-index="2" id="btnIntro2">
+          <span class="btn-led"></span>
+          <span>INTRO 2</span>
+        </button>
+        <button class="arranger-btn intro-btn" data-type="intro" data-index="3" id="btnIntro3">
+          <span class="btn-led"></span>
+          <span>INTRO 3</span>
+        </button>
+      </div>
+
+      <div class="strip-section-group main-group">
+        <button class="arranger-btn main-btn active" data-type="main" data-index="1" id="btnMain1">
+          <span class="btn-led"></span>
+          <span>MAIN A</span>
+        </button>
+        <button class="arranger-btn main-btn" data-type="main" data-index="2" id="btnMain2">
+          <span class="btn-led"></span>
+          <span>MAIN B</span>
+        </button>
+        <button class="arranger-btn main-btn" data-type="main" data-index="3" id="btnMain3">
+          <span class="btn-led"></span>
+          <span>MAIN C</span>
+        </button>
+        <button class="arranger-btn main-btn" data-type="main" data-index="4" id="btnMain4">
+          <span class="btn-led"></span>
+          <span>MAIN D</span>
+        </button>
+      </div>
+
+      <div class="strip-section-group fill-group">
+        <button class="arranger-btn fill-btn" data-type="fill" id="btnFill">
+          <span class="btn-led"></span>
+          <span>FILL IN</span>
+        </button>
+        <button class="arranger-btn break-btn" data-type="break" id="btnBreak">
+          <span class="btn-led"></span>
+          <span>BREAK</span>
+        </button>
+      </div>
+
+      <div class="strip-section-group ending-group">
+        <button class="arranger-btn ending-btn" data-type="ending" data-index="1" id="btnEnding1">
+          <span class="btn-led"></span>
+          <span>ENDING 1</span>
+        </button>
+        <button class="arranger-btn ending-btn" data-type="ending" data-index="2" id="btnEnding2">
+          <span class="btn-led"></span>
+          <span>ENDING 2</span>
+        </button>
+        <button class="arranger-btn ending-btn" data-type="ending" data-index="3" id="btnEnding3">
+          <span class="btn-led"></span>
+          <span>ENDING 3</span>
+        </button>
+      </div>
+
+      <div class="strip-section-group transport-group">
+        <button class="arranger-btn play-stop-btn" id="btnStartStop">
+          <span class="btn-led play-led"></span>
+          <span id="startStopText">START / STOP</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 61-KEY INTERACTIVE PIANO KEYBOARD -->
+    <footer class="keyboard-shelf">
+      <div class="keyboard-controls-row">
+        <div class="split-info">
+          <span class="zone-badge chord-zone-badge">LEFT HAND (CHORD ACCOMPANIMENT)</span>
+          <div class="split-point-control">
+            <span>SPLIT POINT:</span>
+            <input type="range" id="splitPointSlider" min="36" max="72" value="59" step="1">
+            <span class="split-note-name" id="splitPointNoteName">B2 (59)</span>
+          </div>
+          <span class="zone-badge lead-zone-badge">RIGHT HAND (LEAD SOLO)</span>
+        </div>
+      </div>
+      <div class="piano-keys-wrapper" id="pianoKeyboard">
+        <!-- Generated dynamically via JS: 61 white & black keys -->
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- AUDIO & DEVICE SETTINGS MODAL DIALOG -->
+  <div class="modal-backdrop" id="settingsModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2>⚙️ AUDIO & MIDI CONFIGURATION</h2>
+        <button class="modal-close-btn" id="btnCloseSettings">✕</button>
+      </div>
+      <div class="modal-body">
+
+        <!-- AUDIO DRIVER SECTION -->
+        <div class="settings-section">
+          <h3>AUDIO DRIVER & OUTPUT DEVICE</h3>
+          <div class="form-row">
+            <label for="audioDriverSelect">Audio Driver:</label>
+            <select id="audioDriverSelect">
+              <option value="Windows Audio">Windows Audio (WASAPI)</option>
+            </select>
+          </div>
+
+          <div class="form-row" id="audioDeviceRow">
+            <label for="audioDeviceSelect">Output Device:</label>
+            <select id="audioDeviceSelect">
+              <option value="">Default Audio Device</option>
+            </select>
+          </div>
+
+          <div class="form-row" id="asioControlPanelRow" style="display:none;margin-top:6px;">
+            <label></label>
+            <button class="action-btn" id="btnOpenAsioPanel" style="background:#00d2ff;color:#000;font-weight:bold;padding:6px 14px;">🎛️ Open ASIO Control Panel (0 Latency)</button>
+          </div>
+
+          <div class="form-row-grid" style="margin-top:10px;">
+            <div class="form-col">
+              <label for="sampleRateSelect">Sample Rate:</label>
+              <select id="sampleRateSelect">
+                <option value="44100">44,100 Hz</option>
+                <option value="48000">48,000 Hz</option>
+                <option value="96000">96,000 Hz</option>
+              </select>
+            </div>
+            <div class="form-col">
+              <label for="bufferSizeSelect">Buffer Size (Latency):</label>
+              <select id="bufferSizeSelect">
+                <option value="64">64 samples (~1.5 ms)</option>
+                <option value="128">128 samples (~2.9 ms)</option>
+                <option value="256">256 samples (~5.8 ms)</option>
+                <option value="512" selected>512 samples (~11.6 ms)</option>
+                <option value="1024">1024 samples (~23.2 ms)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- MIDI INPUT SECTION -->
+        <div class="settings-section">
+          <h3>MIDI INPUT HARDWARE</h3>
+          <p class="section-hint">Select your connected MIDI keyboard(s) to play chords and melodies live:</p>
+          <div class="midi-devices-list" id="midiDeviceList">
+            <div class="empty-state-sm">Searching for MIDI input devices...</div>
+          </div>
+        </div>
+
+        <!-- SOUNDFONT LOAD SECTION -->
+        <div class="settings-section">
+          <h3>SOUNDFONT (.SF2) SYNTHESIZER</h3>
+          <div class="form-row file-pick-row">
+            <input type="text" id="sf2PathInput" placeholder="Paste full path to SoundFont (.sf2)...">
+            <button class="action-btn" id="btnSelectSf2File">Load SF2</button>
+          </div>
+          <div id="detectedSoundFontsList" class="detected-sf-list"></div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="action-btn cancel-btn" id="btnCancelSettings">Cancel</button>
+        <button class="action-btn apply-btn" id="btnApplySettings">Apply Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

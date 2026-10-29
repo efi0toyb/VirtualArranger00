@@ -1,0 +1,20 @@
+^C:\VIRTUALARRANGER\BUILD\CMAKEFILES\096473D8BD1945D9E8706F1AC5A4BFF1\JUCEHEADER.H.RULE
+setlocal
+build\_deps\juce-build\tools\extras\Build\juceaide\juceaide_artefacts\Custom\juceaide.exe header C:/VirtualArranger/build/VirtualArranger_artefacts/JuceLibraryCode/Release/Defs.txt C:/VirtualArranger/build/VirtualArranger_artefacts/JuceLibraryCode/JuceHeader.h
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\VIRTUALARRANGER\CMAKELISTS.TXT
+setlocal
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/VirtualArranger -BC:/VirtualArranger/build --check-stamp-file C:/VirtualArranger/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

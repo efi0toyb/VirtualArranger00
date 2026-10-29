@@ -1,0 +1,1 @@
+C:\VirtualArranger\build\VirtualArranger_rc_lib.dir\Debug\VirtualArranger_rc_lib.lib

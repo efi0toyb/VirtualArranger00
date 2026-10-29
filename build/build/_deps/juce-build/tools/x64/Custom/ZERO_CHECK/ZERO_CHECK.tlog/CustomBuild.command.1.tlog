@@ -1,0 +1,10 @@
+^C:\VIRTUALARRANGER\BUILD\BUILD\_DEPS\JUCE-BUILD\TOOLS\CMAKEFILES\49F7245EA1205F6BBC76BC6173EE7A4C\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/JUCE -BC:/VirtualArranger/build/build/_deps/juce-build/tools --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/VirtualArranger/build/build/_deps/juce-build/tools/JUCE.slnx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

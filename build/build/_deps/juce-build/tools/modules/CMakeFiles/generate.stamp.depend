@@ -1,0 +1,4 @@
+# CMake generation dependency list for this directory.
+C:/JUCE/modules/CMakeLists.txt
+C:/JUCE/modules/juce_gui_extra/native/typescript/webview-interop/package.json
+C:/VirtualArranger/build/build/_deps/juce-build/tools/CMakeFiles/cmake.verify_globs
